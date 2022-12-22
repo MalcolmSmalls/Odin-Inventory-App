@@ -1,0 +1,11 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const ProducerSchema = new Schema ({
+    stageName: {type: String, required: true, maxLength: 51}
+})
+
+
+ProducerSchema.virtual('url').get(() => `catalog/beat/${this._id}`)
+
+modules.export = mongoose.model('Producer', ProducerSchema)
