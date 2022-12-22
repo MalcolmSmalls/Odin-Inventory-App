@@ -5,7 +5,7 @@ const beatController = require('../controllers/beatController');
 const producerController = require('../controllers/producerController');
 const tagsController = require('../controllers/tagsController');
 
-// HOME PAGE
+// HOME PAGEs
 
 router.get('/', beatController.index)
 
@@ -16,7 +16,7 @@ router.get("/beat/create", beatController.beat_create_get);
 
 router.post("/beat/create", beatController.beat_create_post);
 
-// READ
+// READs
 
 router.get("/beat/:id", beatController.beat_detail);
 

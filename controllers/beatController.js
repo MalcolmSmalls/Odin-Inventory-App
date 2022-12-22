@@ -1,4 +1,4 @@
-const bBat = require ('../models/beat')
+const Beat = require ('../models/beat')
 
 // HOMEPAGE
 exports.index = (req, res) => {
