@@ -11,5 +11,5 @@ const BeatSchema = new Schema ({
 BeatSchema.virtual('url').get(() => `catalog/beat/${this._id}`);
 
 
-modules.export = mongoose.model('Beat', BeatSchema)
+module.exports = mongoose.model('Beat', BeatSchema)
 
