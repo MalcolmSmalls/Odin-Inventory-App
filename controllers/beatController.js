@@ -1,9 +1,31 @@
 const Beat = require ('../models/beat')
+const Producer = require ('../models/producer')
+const Tags = require ('../models/tags')
+const async = require('async')
 
 // HOMEPAGE
 exports.index = (req, res) => {
-    res.send("NOT IMPLEMENTED: Site Home Page");
-  };
+    async.parallel(
+        {
+          beat_count(callback) {
+            Beat.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
+          },
+          producer_count(callback) {
+            Producer.countDocuments({}, callback);
+          },
+          tags_count(callback) {
+            Tags.countDocuments({}, callback);
+          },
+        },
+        (err, results) => {
+          res.render("index", {
+            title: "Beat Collection",
+            error: err,
+            data: results,
+          });
+        }
+      );
+    };
 
 // Create
 

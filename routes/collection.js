@@ -78,7 +78,7 @@ router.post("/tags/create", tagsController.tags_create_post);
 
 router.get("/tags/:id", tagsController.tags_detail);
 
-router.get("/tagss", tagsController.tags_list);
+router.get("/tags", tagsController.tags_list);
 
 
 // UPDATE 
