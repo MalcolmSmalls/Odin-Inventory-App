@@ -8,8 +8,14 @@ const BeatSchema = new Schema ({
     bpm: {type: Number, max: 400}
 });
 
-BeatSchema.virtual('url').get(() => `catalog/beat/${this._id}`);
+BeatSchema.virtual('url').get(function (){
+    return `/catalog/beat/${this._id}`
+});
 
+
+// BeatSchema.virtual('url').get(function() {
+//     return `/catalog/beat/${this._id}`
+// });
 
 module.exports = mongoose.model('Beat', BeatSchema)
 

@@ -43,8 +43,18 @@ exports.beat_create_post = (req, res) => {
 // Read
 
 exports.beat_list = (req, res) => {
-	res.send('not yet implemented: beat list');
+    Beat.find({}, "title producer")
+    .sort({ title: 1 })
+    .populate("producer")
+    .exec(function (err, list_beats) {
+      if (err) {
+        return next(err);
+      }
+      //Successful, so render
+      res.render("beat_list", { title: "Beat List", beat_list: list_beats });
+    });
 };
+
 
 
 exports.beat_detail = (req, res) => {

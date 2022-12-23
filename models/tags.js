@@ -7,7 +7,9 @@ const TagsSchema = new Schema({
     tag3: {type: String, minLength: 3, maxLength: 51}
 })
 
-TagsSchema.virtual('url').get(() => `catalog/beat/${this._id}`)
+TagsSchema.virtual('url').get(function () {
+    return `catalog/beat/${this._id}`
+});
 
 
 module.exports = mongoose.model("Tags", TagsSchema)

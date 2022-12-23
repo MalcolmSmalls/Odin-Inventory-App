@@ -6,6 +6,8 @@ const ProducerSchema = new Schema ({
 })
 
 
-ProducerSchema.virtual('url').get(() => `catalog/beat/${this._id}`)
+ProducerSchema.virtual('url').get(function() {
+    return `catalog/beat/${this._id}`
+});
 
 module.exports = mongoose.model('Producer', ProducerSchema)
