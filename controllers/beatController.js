@@ -58,9 +58,37 @@ exports.beat_list = (req, res) => {
 
 
 
-exports.beat_detail = (req, res) => {
-	res.send(`not yet implemented: beat Detail: ${req.params.id}`)
-};
+exports.beat_detail = (req, res, next) => {
+	async.parallel(
+	{
+    beat(callback){
+      Beat.findById(req.params.id)
+      .populate("producer")
+      .populate("tags")
+      .exec(callback);
+
+    }
+	},
+	(err, results) => {
+		if(err) {
+			return next(err);
+		}
+		if(results.beat == null) {
+			const err = new Error ("Beat not found");
+			err.status = 404;
+			return next (err)
+		}
+
+		res.render("beat_detail", {
+			title: results.beat.title,
+			beat: results.beat
+		})
+	}
+
+	)
+
+}
+
 
 
 //Update
