@@ -17,8 +17,19 @@ exports.tags_create_post = (req, res) => {
 
 // Read
 
-exports.tags_list = (req, res) => {
-	res.send('not yet implemented: tags list');
+exports.tags_list = function (req, res, next) {
+	Tags.find()
+	.sort([["tag1", "ascending"]])
+	.exec(function (err, list_tags) {
+		if (err) {
+			return next(err);
+		}
+		res.render("tags_list", {
+			title: "Tags List",
+			tags_list: list_tags
+		});
+	});
+	
 };
 
 
