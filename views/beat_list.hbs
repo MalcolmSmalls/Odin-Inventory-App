@@ -1,7 +1,6 @@
 <h1>{{title}}</h1>
-
 <ul>
     {{#each beat_list}}
-    <li><a href={{this.url}}>{{this.title}}</a></li>
+    <li><a href={{this.url}}>{{this.title}}</a> | {{this.producer.stageName}} | {{this.beatCreated_formatted}} | {{this.bpm}} BPM | {{this.tags.tag1}} </li>
     {{/each}}
 </ul>

@@ -43,7 +43,7 @@ exports.beat_create_post = (req, res) => {
 // Read
 
 exports.beat_list = (req, res) => {
-    Beat.find({}, "title producer")
+    Beat.find({}, "title producer bpm tags dateCreated")
     .sort({ title: 1 })
     .populate("producer")
     .exec(function (err, list_beats) {
