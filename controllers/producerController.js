@@ -1,3 +1,4 @@
+const { sortBy, nextTick } = require('async');
 const Producer = require ('../models/producer')
 
 
@@ -17,8 +18,15 @@ exports.producer_create_post = (req, res) => {
 
 // Read
 
-exports.producer_list = (req, res) => {
-	res.send('not yet implemented: producer list');
+exports.producer_list = (req, res, next) => {
+	Producer.find({}, 'stageName')
+	.sort([["stageName", "ascending"]])
+	.exec(function (err, list_producers) {
+		if(err) {
+			return next(err);
+		}
+		res.render('producer_list', { title: "Producer List", producer_list: list_producers})
+	})
 };
 
 

@@ -8,7 +8,7 @@ const TagsSchema = new Schema({
 })
 
 TagsSchema.virtual('url').get(function () {
-    return `catalog/beat/${this._id}`
+    return `catalog/tags/${this._id}`
 });
 
 

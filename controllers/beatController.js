@@ -43,9 +43,10 @@ exports.beat_create_post = (req, res) => {
 // Read
 
 exports.beat_list = (req, res) => {
-    Beat.find({}, "title producer bpm tags dateCreated")
+    Beat.find()
     .sort({ title: 1 })
     .populate("producer")
+    .populate("tags")
     .exec(function (err, list_beats) {
       if (err) {
         return next(err);
