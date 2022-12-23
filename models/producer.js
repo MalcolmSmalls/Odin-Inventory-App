@@ -7,7 +7,7 @@ const ProducerSchema = new Schema ({
 
 
 ProducerSchema.virtual('url').get(function() {
-    return `catalog/producer/${this._id}`
+    return `/collection/producer/${this._id}`
 });
 
 module.exports = mongoose.model('Producer', ProducerSchema)

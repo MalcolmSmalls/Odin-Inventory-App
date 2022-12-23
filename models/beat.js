@@ -11,7 +11,7 @@ const BeatSchema = new Schema ({
 });
 
 BeatSchema.virtual('url').get(function (){
-    return `/catalog/beat/${this._id}`
+    return `/collection/beat/${this._id}`
 });
 
 

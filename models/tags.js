@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Beat = require('../models/beat')
+const async = require ('async')
 
 const TagsSchema = new Schema({
     tag1: {type: String, minLength: 3, maxLength: 51},
@@ -8,7 +10,7 @@ const TagsSchema = new Schema({
 })
 
 TagsSchema.virtual('url').get(function () {
-    return `catalog/tags/${this._id}`
+    return `/collection/tags/${this._id}`
 });
 
 

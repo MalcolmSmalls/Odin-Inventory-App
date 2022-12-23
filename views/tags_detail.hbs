@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+
+<h2>{{this.tags.tag1}}</h2> <h3>{{this.tags.tag2}}</h3> <h4>{{this.tags.tag3}}</h4>
+
+<ul>
+    {{#each tags_beats}}
+        <li><a href={{this.url}}>{{this.title}}</a></li>
+    {{/each}}
+
+</ul>

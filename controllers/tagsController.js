@@ -1,4 +1,6 @@
 const Tags = require ('../models/tags')
+const Beat = require('../models/beat')
+const async = require('async')
 
 
 
@@ -33,8 +35,38 @@ exports.tags_list = function (req, res, next) {
 };
 
 
-exports.tags_detail = (req, res) => {
-	res.send(`not yet implemented: tags Detail: ${req.params.id}`)
+exports.tags_detail = (req, res, next) => {
+	async.parallel(
+	{
+		tags(callback) {
+			Tags.findById(req.params.id).exec(callback);
+		},
+		tags_beats(callback){
+			Beat.find({ tags: req.params.id }).exec(callback);
+		},
+
+	},
+
+	(err, results) => {
+		if (err) {
+			return next(err);
+		}
+		if (results.tags == null) {
+			const err = new Error("Tags not found");
+			err.status = 404;
+			return next(err);
+		}
+
+		res.render("tags_detail", {
+			title: "Tags Detail",
+			tags: results.tags,
+			tags_beats: results.tags_beats,
+		});
+	}
+
+
+	);
+	
 };
 
 
