@@ -1,3 +1,9 @@
 <h1>{{title}}</h1>
 
-<span>Produced By: <a href={{beat.producer.url}}>{{beat.producer.stageName}}</a></span>
+<ul>
+<li>Produced By: <a href={{beat.producer.url}}>{{beat.producer.stageName}}</a></li>
+<li>Tempo: {{beat.bpm}} BPM</li>
+<li>Upload Date: {{beat.beatCreated_formatted}}</li>
+<li>Tags: {{beat.tags.tag1}} - {{beat.tags.tag2}} - {{beat.tags.tag3}}</li>
+
+</ul>

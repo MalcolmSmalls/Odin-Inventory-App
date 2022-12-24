@@ -20,13 +20,8 @@ BeatSchema.virtual("beatCreated_formatted").get(function () {
 	return DateTime.fromJSDate(this.dateCreated).toLocaleString(DateTime.DATE_MED);
 });
 
-
-BeatSchema.virtual("bpm_formatted").get(function(){
-    return 'yo'
-})
-// BeatSchema.virtual('url').get(function() {
-//     return `/catalog/beat/${this._id}`
-// });
+// BeatSchema.set('toObject', {virtuals: true})
+BeatSchema.set('toJSON', {virtuals: true})
 
 module.exports = mongoose.model('Beat', BeatSchema)
 
