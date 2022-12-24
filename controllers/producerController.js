@@ -1,4 +1,6 @@
-const { sortBy, nextTick } = require('async');
+const async = require('async');
+const beat = require('../models/beat');
+const Beat = require('../models/beat')
 const Producer = require ('../models/producer')
 
 
@@ -30,8 +32,36 @@ exports.producer_list = (req, res, next) => {
 };
 
 
-exports.producer_detail = (req, res) => {
-	res.send(`not yet implemented: Producer Detail: ${req.params.id}`)
+exports.producer_detail = (req, res, next) => {
+	async.parallel(
+		{
+			producer(callback){
+				Producer.findById(req.params.id)
+				.exec(callback);
+			},
+
+			beat(callback){
+				Beat.find({producer: req.params.id})
+				.exec(callback);
+			}
+		},
+		(err, results) => {
+			if(err){
+				return next(err)
+			}
+			if(results.producer == null){
+				const err = new Error ("Producer not found")
+				err.status = 404;
+				return next (err)
+			}
+
+			res.render("producer_detail", {
+				title: results.producer.stageName,
+				producer: results.producer,
+				producer_beats: results.beat
+			})
+		}
+	)
 };
 
 
