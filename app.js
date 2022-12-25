@@ -8,6 +8,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"))
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const hbs = require('hbs')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -46,4 +47,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+hbs.registerHelper('if_eq', function(a,b, opts) {
+	if ( a == b ) {
+		return opts.fn(this)
+	} else {
+		return opts.inverse(this)
+	}
+	
+
+});
 module.exports = app;

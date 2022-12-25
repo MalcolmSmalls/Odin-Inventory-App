@@ -3,14 +3,13 @@
     <input type="text"
         id="createProducer"
         name="stageName"
-        
+        value={{#if_eq producer.stageName undefined}} '' {{else}} 'herm' {{/if_eq}} 
         
         />
     <button type="submit">{{title}}</button>
 </form>
 
 {{#if errors}}
-
 {{#each errors}}
 
 <span>{{this.msg}}</span>

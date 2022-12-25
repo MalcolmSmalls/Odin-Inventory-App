@@ -1,19 +1,61 @@
 const Tags = require ('../models/tags')
 const Beat = require('../models/beat')
 const async = require('async')
+const { body, validationResult } = require('express-validator')
 
 
 
 // Create
 
 exports.tags_create_get = (req, res) => {
-	res.send('not yet implemented: tags create GET');
+	res.render('tags_form', { title: "Add a tag"});
 };
 
 
-exports.tags_create_post = (req, res) => {
-	res.send('not yet implemented: tags create POST');
-};
+exports.tags_create_post = [
+	body('tag1')
+		.trim()
+		.isLength( {min: 1} )
+		.escape()
+		.withMessage( 'Tag required' ),
+
+		body('tag2')
+		.trim()
+		.isLength( {min: 1} )
+		.escape()
+		.withMessage( 'Tag required' ),
+
+		body('tag3')
+		.trim()
+		.isLength( {min: 1} )
+		.escape()
+		.withMessage( 'Tag required' ),
+
+	(req, res, next) => {
+			const errors = validationResult(req);
+
+			const tags = new Tags ({ tag1: req.body.tag1, tag2: req.body.tag2, tag3: req.body.tag3 })
+
+			if ( !errors.isEmpty() ) {
+
+				res.render('tags_form', {
+					title: "Create Tags",
+					tags,
+					errors: errors.array()
+				});
+			return
+
+		}
+
+		tags.save((err) => {
+			if(err){
+				return next(err)
+			}
+			res.redirect(tags.url)
+		})
+
+	}
+]
 
 
 
