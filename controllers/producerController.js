@@ -1,21 +1,59 @@
 const async = require('async');
-const beat = require('../models/beat');
 const Beat = require('../models/beat')
 const Producer = require ('../models/producer')
+const { body, validationResult } = require('express-validator')
+
 
 
 
 // Create
 
-exports.producer_create_get = (req, res) => {
-	res.send('not yet implemented: producer create GET');
+exports.producer_create_get = (req, res, next) => {
+	res.render("producer_form", { title: "Create Producer" });
+
 };
 
 
-exports.producer_create_post = (req, res) => {
-	res.send('not yet implemented: producer create POST');
-};
+exports.producer_create_post = [
+	body("stageName", `Producer name required`).trim().isLength({ min: 1 }).escape(),
 
+	(req, res, next) => {
+		const errors = validationResult(req);
+
+		const producer = new Producer ({ stageName: req.body.stageName })
+
+		if (!errors.isEmpty()) {
+
+			res.render("producer_form", {
+				title: "Create Producer", 
+				producer,
+				errors: errors.array()	
+			});
+		return
+
+		} else {
+			Producer.findOne({ stageName: req.body.stageName }).exec((err, found_producer) => {
+				if(err) {
+					return next(err);
+				}
+
+				if (found_producer) {
+					res.redirect(found_producer.url);
+				}else {
+					producer.save((err) => {
+						if(err) {
+							return next(err)
+						}
+						res.redirect(producer.url)
+					})
+				}
+			})
+		}
+
+	}
+
+
+]
 
 
 // Read

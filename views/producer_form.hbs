@@ -1,0 +1,20 @@
+<form method="POST" action="">
+    <label for="createProducer"></label>
+    <input type="text"
+        id="createProducer"
+        name="stageName"
+        
+        
+        />
+    <button type="submit">{{title}}</button>
+</form>
+
+{{#if errors}}
+
+{{#each errors}}
+
+<span>{{this.msg}}</span>
+{{/each}}
+
+
+{{/if}}
