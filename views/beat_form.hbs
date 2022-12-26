@@ -1,0 +1,56 @@
+{{title}}
+
+<form method="POST" action="">
+    <label for="title">Title:</label>
+    <input 
+        type="text"
+        name="title"
+        id="title"
+        value={{#if_eq beat.title undefined}} '' {{else}} {{beat.title}} {{/if_eq}}
+    />
+
+    <label for="producer">Producer</label>
+    <input 
+        type="text"
+        name="producer"
+        id="producer"
+        value={{#if_eq beat.producer.stageName undefined}} '' {{else}} {{beat.producer.stageName}} {{/if_eq}}
+    />
+
+    <label for="tags">Tag 1:</label>
+    <input 
+        type="text"
+        name="tag1"
+        id="tags"
+        value={{#if_eq beat.tags.tag1 undefined}} '' {{else}} {{beat.tags.tag1}} {{/if_eq}}
+    />
+
+    <label for="tags2">Tag 2:</label>
+    <input 
+        type="text"
+        name="tag2"
+        id="tags2"
+        value={{#if_eq beat.tags.tag2 undefined}} '' {{else}} {{beat.tags.tag2}} {{/if_eq}}
+    />
+
+    <label for="tags3">Tag 3:</label>
+    <input 
+        type="text"
+        name="tag3"
+        id="tags3"
+        value={{#if_eq beat.tags.tag3 undefined}} '' {{else}} {{beat.tags.tag3}} {{/if_eq}}
+    />
+    
+    <label for="bpm">BPM</label>
+    <input 
+        type="number"
+        name="bpm"
+        id="bpm"
+        value={{#if_eq beat.bpm undefined}} '' {{else}} {{beat.bpm}} {{/if_eq}}
+    />
+
+
+    <button type="submit">Add Beat</button>
+
+
+</form>

@@ -1,9 +1,11 @@
+<h1>{{title}}</h1>
+
 <form method="POST" action="">
     <label for="createProducer"></label>
     <input type="text"
         id="createProducer"
         name="stageName"
-        value={{#if_eq producer.stageName undefined}} '' {{else}} 'herm' {{/if_eq}} 
+        value={{#if_eq producer.stageName undefined}} '' {{else}} {{producer.stageName}} {{/if_eq}} 
         
         />
     <button type="submit">{{title}}</button>

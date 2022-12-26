@@ -2,6 +2,7 @@ const Beat = require ('../models/beat')
 const Producer = require ('../models/producer')
 const Tags = require ('../models/tags')
 const async = require('async')
+const { body, validationResult } = require('express-validator');
 
 // HOMEPAGE
 exports.index = (req, res) => {
@@ -30,13 +31,80 @@ exports.index = (req, res) => {
 // Create
 
 exports.beat_create_get = (req, res) => {
-	res.send('not yet implemented: beat create GET');
+	res.render('beat_form', {Title:'Create a beat'})
 };
 
 
-exports.beat_create_post = (req, res) => {
-	res.send('not yet implemented: beat create POST');
-};
+exports.beat_create_post = [
+  body('title')
+    .trim()
+    .isLength( {min: 1} )
+    .escape()
+    .withMessage ( 'Title required'),
+
+  body('producer')
+    .trim()
+    .isLength( {min: 1} )
+    .escape()
+    .withMessage ( 'Producer is required' ),
+
+  body('tags.*')
+    .escape(),
+
+  body('bpm')
+    .escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req)
+
+    const tags = new Tags({
+      tag1: req.body.tag1,
+      tag2: req.body.tag2,
+      tag3: req.body.tag3
+    })
+
+    const producer = new Producer({
+      stageName: req.body.producer
+    })
+
+    const beat = new Beat ({
+      title: req.body.title,
+      producer: producer,
+      tags: tags,
+      bpm: req.body.bpm
+    });
+
+    if ( !errors.isEmpty() ) { 
+      res.render('beat_form', {
+        title: "Create Beat",
+        beat,
+        errors: errors.array() 
+      })
+    return
+    }
+
+    producer.save((err) => {
+      if(err){
+        return next(err)
+      }
+    })
+
+    tags.save((err) => {
+      if(err){
+        return next(err)
+      }
+    })
+
+    beat.save((err) => {
+      if(err){
+        return next(err)
+      }
+      res.redirect(beat.url)
+    })
+  }
+
+
+]
 
 
 
