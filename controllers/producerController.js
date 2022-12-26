@@ -117,10 +117,79 @@ exports.producer_update_post = (req, res) => {
 //Delete
 
 
-exports.producer_delete_get = (req, res) => {
-	res.send('not yet implemented: producer delete GET');
+exports.producer_delete_get = (req, res, next) => {
+	async.parallel(
+		{
+			producer(callback){
+				Producer.findById(req.params.id).exec(callback);
+			},
+		
+			producer_beats(callback){
+				Beat.find({ producer: req.params.id}).exec(callback);
+			},
+
+		},
+		(err, results) => {
+			if(err){
+				return next(err);
+			}
+			if (results.producer == null) {
+				res.redirect("/collection/producer");
+			}
+		
+	
+
+			res.render("producer_delete", {
+				title: "Delete Producer", 
+				producer: results.producer,
+				producer_beats: results.producer_beats
+			});
+
+		}
+
+	);
+
 };
 
-exports.producer_delete_post = (req, res) => {
-	res.send('not yet implemented: producer delete POST');
+exports.producer_delete_post = (req, res, next) => {
+	async.parallel (
+
+  	  { 
+		producer(callback){
+			Producer.findById(req.body.producerid).exec(callback);
+		},
+
+		producer_beats(callback){
+			Beat.find({ producer: req.body.producerid }).exec(callback);
+		},
+	  }, 
+	  (err, results) => {
+		if(err){
+			return next(err);
+		}
+
+		if (results.producer_beats.length > 0){
+			res.render("producer_delete", {
+				title: "Delete Producer",
+				producer: results.producer,
+				producer_beats: results.producer_beats
+
+			});
+
+			return
+
+		}
+
+		Producer.findByIdAndRemove(req.body.producerid, (err) => {
+		  if (err) {
+			return next(err);
+		  }
+		  res.redirect("/collection/producer")
+		});
+	
+	  }
+
+	);
+
+
 };

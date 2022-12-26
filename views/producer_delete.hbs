@@ -1,0 +1,34 @@
+<h1>{{title}} {{producer.stageName}}</h1>
+
+{{#if_uneq producer_beats.length 0}}
+shouldn't be here
+    <p>Delete the following books before attempting to delete this author.</p>
+{{/if_uneq}}
+
+<h4>Beats</h4>
+
+{{#each producer_beats }}
+    <a href={{this.url}}>{{this.title}}</a>
+    {{this.tags}}
+{{/each}}
+{{!-- 
+{{producer_beats.length}}
+{{producer.beat.length}} --}}
+<p>{{producer_beats.length}}</p>
+{{!-- {{producer.beat}} --}}
+
+{{#if_eq producer_beats.length 0}}
+shouldn't be here
+    <form method = "POST" action = "">
+
+        <input
+        id="producerid" 
+        type="hidden"
+        name="producerid",
+        required="true",	
+        value={{producer._id}}
+        />
+        <button type='submit'>Delete</button>
+    </form>
+
+{{/if_eq}}
