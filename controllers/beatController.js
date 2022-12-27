@@ -162,13 +162,135 @@ exports.beat_detail = (req, res, next) => {
 //Update
 
 
-exports.beat_update_get = (req, res) => {
-	res.send('not yet implemented: beat update GET');
-};
+exports.beat_update_get = (req, res, next) => {
+	async.parallel (
+	   {
+		beat(callback) {
+			Beat.findById(req.params.id)
+			  .populate("producer")
+			  .populate("tags")
+			  .exec(callback);
 
-exports.beat_update_post = (req, res) => {
-	res.send('not yet implemented: beat update POST');
-};
+		},
+		producers(callback){
+			Producer.find(callback)
+		},
+		genres(callback) {
+			Tags.find(callback)
+		},
+	   },
+	   (err, results) => {
+		if (err) {
+			return next(err);
+		}
+		if (results.beat == null) {
+			const err = new Error("Beat not found");
+			err.status = 404;
+			return next(err);
+		}
+
+		// for (const tag of results.tags) {
+		// 	for (const beatTag of results.beat.tags) {
+		// 		if(tags._id.toString() === beatTag._id.toString()) {
+		// 			tags.checked = "true"
+		// 		}
+		// 	}
+
+		// }
+		res.render("beat_form", {
+			title: "Update Beat",
+			producers: results.producers,
+			tags: results.tags,
+			beat: results.beat,
+		})
+
+	   }
+
+	)
+
+
+
+}
+
+exports.beat_update_post = [
+	(req, res, next) => {
+		if (!Array.isArray(req.body.tags)) {
+			req.body.tags =
+				typeof req.body.tags === "undefined" ? {} : req.body.tags;
+		}
+		next();
+	},
+
+	body("title", "Title must not be empty.")
+	  .trim()
+	  .isLength({ min: 1 })
+	  .escape(),
+
+	body("producer", "Producer must not be empty")
+	  .trim()
+	  .isLength ({ min: 1})
+	  .escape(),
+
+	body("tags")
+	  .trim()
+	  .escape(),
+
+	body("bpm").escape(),
+
+
+	(req, res, next) => {
+		const errors = validationResult(req)
+		
+		const beat = new Beat({
+			title: req.body.title,
+			producer: req.body.producer,
+			tags: typeof req.body.tags === 'undefined' ? {} : req.body.tags,
+			bpm: req.body.bpm,
+			_id: req.params.id,
+
+
+		});
+
+		if (!errors.isEmpty()) {
+			async.parallel (
+			  {
+				producers(callback) {
+					Producer.find(callback);
+				},
+
+				tags(callback) {
+					Tags.find(callback);
+				},
+
+			  },
+			  (err, results) => {
+				if(err) {
+					return next(err);
+				}
+
+			  res.render("beat_form", {
+				title: "Update Beat",
+				producer: results.producer,
+				tags: results.tags,
+				beat,
+				errors: errors.array()
+			  });
+			}	
+
+		);
+
+	return
+	}
+	Beat.findByIdAndUpdate(req.params.id, beat, {}, (err, thebeat) => {
+		if(err){
+			return next(err);
+		}
+		res.direct(thebeat.url)
+	})
+
+	}
+
+]
 
 //Delete
 
