@@ -173,10 +173,57 @@ exports.beat_update_post = (req, res) => {
 //Delete
 
 
-exports.beat_delete_get = (req, res) => {
-	res.send('not yet implemented: beat delete GET');
+exports.beat_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      beat(callback){
+        Beat.findById(req.params.id).exec(callback);
+      },
+    },
+    (err, results) => {
+      if(err){
+        return next(err);
+      }
+      if (results.beat == null){
+        res.redirect("/collection/beat")
+      }
+
+      res.render("beat_delete", {
+        title: "Delete Beat",
+        beat: results.beat,
+      });
+
+    }
+  );
 };
 
-exports.beat_delete_post = (req, res) => {
-	res.send('not yet implemented: beat delete POST');
+exports.beat_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      beat(callback){
+        Beat.findById(req.body.beatid).exec(callback)
+      },
+    },
+    (err, results) => {
+      if(err){
+        return next(err);
+      }
+
+      if(results.beat){
+        res.render('beat_delete', {
+          title: "Delete Beat",
+          beat: results.beat,
+      });
+
+        return 
+      }
+
+      Beat.findByIdAndRemove(req.body.beatid, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/collection/beat")
+      })
+    }
+    )
 };

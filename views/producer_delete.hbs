@@ -1,8 +1,7 @@
 <h1>{{title}} {{producer.stageName}}</h1>
 
 {{#if_uneq producer_beats.length 0}}
-shouldn't be here
-    <p>Delete the following books before attempting to delete this author.</p>
+    <p>Delete the following beats before attempting to delete this producer.</p>
 {{/if_uneq}}
 
 <h4>Beats</h4>
@@ -18,7 +17,6 @@ shouldn't be here
 {{!-- {{producer.beat}} --}}
 
 {{#if_eq producer_beats.length 0}}
-shouldn't be here
     <form method = "POST" action = "">
 
         <input
