@@ -209,14 +209,14 @@ exports.beat_delete_post = (req, res, next) => {
         return next(err);
       }
 
-      if(results.beat){
-        res.render('beat_delete', {
-          title: "Delete Beat",
-          beat: results.beat,
-      });
-
-        return 
-      }
+      // if(results.beat){
+      //   res.render('beat_delete', {
+      //     title: "Delete Beat",
+      //     beat: results.beat,
+      //     identity: req.body.beatid
+      // });
+      //   return 
+      // }
 
       Beat.findByIdAndRemove(req.body.beatid, (err) => {
         if (err) {
