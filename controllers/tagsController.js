@@ -1,7 +1,8 @@
 const Tags = require ('../models/tags')
 const Beat = require('../models/beat')
 const async = require('async')
-const { body, validationResult } = require('express-validator')
+const { body, validationResult } = require('express-validator');
+const producer = require('../models/producer');
 
 
 
@@ -127,9 +128,54 @@ exports.tags_update_post = (req, res) => {
 
 
 exports.tags_delete_get = (req, res) => {
-	res.send('not yet implemented: tags delete GET');
+	async.parallel (
+		{
+			tags(callback){
+				Tags.findById(req.params.id).exec(callback)
+			}
+
+		},
+		(err, results) => {
+			if(err){
+				return next(err);
+			}
+			if (results.tags == null){
+				res.redirect("/collection/tags");
+			}
+
+			res.render("tags_delete", {
+				title: "Delete Tags",
+				tags: results.tags
+			})
+		}
+	)
 };
 
 exports.tags_delete_post = (req, res) => {
-	res.send('not yet implemented: tags delete POST');
+	async.parallel (
+		{
+			tags(callback){
+				Tags.findById(req.body.tagsid).exec(callback);
+			}
+		},
+		(err, results) => {
+			if(err){
+				return next(err);
+			}
+
+			// res.render("tags_delete", {
+			// 	title: "Delete tags",
+			// 	tags: results.tags
+			// })
+
+			Tags.findByIdAndRemove(req.body.tagsid, (err) => {
+				if(err) {
+					return next(err);
+				}
+				res.redirect('/collection/tags')
+			})
+
+		}
+	);
+
 };

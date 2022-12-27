@@ -1,4 +1,5 @@
-<h1>{{title}} {{producer.stageName}}</h1>
+<h1>{{title}}</h1>
+<p>{{producer.stageName}}</p>
 
 {{#if_uneq producer_beats.length 0}}
     <p>Delete the following beats before attempting to delete this producer.</p>
@@ -20,13 +21,13 @@
     <form method = "POST" action = "">
 
         <input
-        id="producerid" 
-        type="hidden"
-        name="producerid",
-        required="true",	
-        value={{producer._id}}
+            id="producerid" 
+            type="hidden"
+            name="producerid",
+            required="true",	
+            value={{producer._id}}
         />
-        <button type='submit'>Delete</button>
+            <button type='submit'>Delete</button>
     </form>
 
 {{/if_eq}}

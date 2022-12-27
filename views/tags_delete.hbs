@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+<p>{{tags.tag1}} {{tags.tag2}} {{tags.tag3}}</p>
+<form method = "POST" action = "">
+
+    <input
+        id="tagsid" 
+        type="hidden"
+        name="tagsid",
+        required="true",	
+        value={{tags._id}}
+    />
+    <button type='submit'>Delete</button>
+</form>
